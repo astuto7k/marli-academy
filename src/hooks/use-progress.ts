@@ -58,68 +58,81 @@ export function lessonKey(moduleSlug: string, lessonIndex: number): string {
   return `${moduleSlug}::${lessonIndex}`;
 }
 
+/**
+ * Store compartilhada: todos os componentes (topbar, dashboard, módulo)
+ * leem a MESMA instância, então marcar uma aula atualiza os pontos lá em cima.
+ */
+let storeState: ProgressState = EMPTY_STATE;
+let hydratedOnce = false;
+const listeners = new Set<() => void>();
+
+function emit() {
+  listeners.forEach((listener) => listener());
+}
+
+function setStore(next: ProgressState) {
+  storeState = next;
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  } catch {
+    // Modo privado / cota cheia: seguimos apenas com o estado em memória.
+  }
+  emit();
+}
+
 export function useProgress() {
-  const [state, setState] = useState<ProgressState>(EMPTY_STATE);
+  const [state, setState] = useState<ProgressState>(storeState);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setState(readState());
-    setHydrated(true);
-  }, []);
-
-  const persist = useCallback((next: ProgressState) => {
-    setState(next);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      // Modo privado / cota cheia: seguimos apenas com o estado em memória.
+    if (!hydratedOnce) {
+      storeState = readState();
+      hydratedOnce = true;
     }
+    setState(storeState);
+    setHydrated(true);
+
+    const listener = () => setState(storeState);
+    listeners.add(listener);
+    return () => {
+      listeners.delete(listener);
+    };
   }, []);
 
-  const toggleLesson = useCallback(
-    (moduleSlug: string, lessonIndex: number) => {
-      const key = lessonKey(moduleSlug, lessonIndex);
-      setState((current) => {
-        const has = current.lessons.includes(key);
-        const next: ProgressState = {
-          ...current,
-          lessons: has
-            ? current.lessons.filter((item) => item !== key)
-            : [...current.lessons, key],
-        };
-        try {
-          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-        } catch {
-          /* noop */
-        }
-        return next;
-      });
-    },
-    [],
-  );
-
-  const toggleChallenge = useCallback((moduleSlug: string) => {
-    setState((current) => {
-      const has = current.challenges.includes(moduleSlug);
-      const next: ProgressState = {
-        ...current,
-        challenges: has
-          ? current.challenges.filter((item) => item !== moduleSlug)
-          : [...current.challenges, moduleSlug],
-      };
-      try {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      } catch {
-        /* noop */
-      }
-      return next;
+  const toggleLesson = useCallback((moduleSlug: string, lessonIndex: number) => {
+    const key = lessonKey(moduleSlug, lessonIndex);
+    const has = storeState.lessons.includes(key);
+    setStore({
+      ...storeState,
+      lessons: has
+        ? storeState.lessons.filter((item) => item !== key)
+        : [...storeState.lessons, key],
     });
   }, []);
 
-  const setRota = useCallback(
-    (rota: RotaId) => persist({ ...readState(), rota }),
-    [persist],
+  const completeLesson = useCallback((moduleSlug: string, lessonIndex: number) => {
+    const key = lessonKey(moduleSlug, lessonIndex);
+    if (storeState.lessons.includes(key)) return;
+    setStore({ ...storeState, lessons: [...storeState.lessons, key] });
+  }, []);
+
+  const isLessonDone = useCallback(
+    (moduleSlug: string, lessonIndex: number) =>
+      state.lessons.includes(lessonKey(moduleSlug, lessonIndex)),
+    [state.lessons],
   );
+
+  const toggleChallenge = useCallback((moduleSlug: string) => {
+    const has = storeState.challenges.includes(moduleSlug);
+    setStore({
+      ...storeState,
+      challenges: has
+        ? storeState.challenges.filter((item) => item !== moduleSlug)
+        : [...storeState.challenges, moduleSlug],
+    });
+  }, []);
+
+  const setRota = useCallback((rota: RotaId) => setStore({ ...storeState, rota }), []);
 
   const completedIn = useCallback(
     (moduleSlug: string) =>
@@ -179,6 +192,8 @@ export function useProgress() {
     completedIn,
     progressOf,
     toggleLesson,
+    completeLesson,
+    isLessonDone,
     toggleChallenge,
     setRota,
   };

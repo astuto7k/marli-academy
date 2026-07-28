@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import {
   ArrowLeft,
+  ArrowRight,
   CheckCircle2,
   Circle,
   Clock3,
@@ -49,9 +50,12 @@ export const Route = createFileRoute("/modulo/$slug")({
 function ModulePage() {
   const { slug } = Route.useLoaderData() as { slug: string };
   const academyModule = getModule(slug) as AcademyModule;
-  const { hydrated, state, progressOf, toggleLesson, toggleChallenge } = useProgress();
+  const { hydrated, state, progressOf, toggleLesson, completeLesson, toggleChallenge } =
+    useProgress();
   const [activeIndex, setActiveIndex] = useState(0);
   const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
+  const activeDone = state.lessons.includes(`${academyModule.slug}::${activeIndex}`);
+  const hasNextLesson = activeIndex < academyModule.lessons.length - 1;
 
   const progress = progressOf(academyModule.slug);
   const inProduction = academyModule.status === "producao";
@@ -90,12 +94,55 @@ function ModulePage() {
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <LessonVideo title={`${academyModule.title} — ${activeLesson ?? "aula"}`} />
-            <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
-              <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
-              {activeLesson ?? academyModule.title}
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+                <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
+                Aula {activeIndex + 1} de {academyModule.lessons.length} ·{" "}
+                {activeLesson ?? academyModule.title}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  type="button"
+                  variant={activeDone ? "outline" : "default"}
+                  disabled={inProduction}
+                  onClick={() => toggleLesson(academyModule.slug, activeIndex)}
+                  className={cn(
+                    "gap-2",
+                    !activeDone && "bg-gradient-gold text-primary-foreground hover:opacity-90",
+                  )}
+                >
+                  <CheckCircle2 className="size-4" aria-hidden="true" />
+                  {activeDone ? "Aula concluída (+10 pts)" : "Marcar como concluída"}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={inProduction || !hasNextLesson || !activeDone}
+                  title={
+                    !activeDone ? "Marque a aula como concluída para avançar" : "Ir para a próxima aula"
+                  }
+                  onClick={() => {
+                    completeLesson(academyModule.slug, activeIndex);
+                    setActiveIndex((current) =>
+                      Math.min(current + 1, academyModule.lessons.length - 1),
+                    );
+                  }}
+                  className="gap-2"
+                >
+                  Próxima aula
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+              </div>
+            </div>
+            {!activeDone && hasNextLesson && (
+              <p className="text-[0.7rem] text-muted-foreground">
+                Marque esta aula como concluída para liberar a próxima.
+              </p>
+            )}
           </div>
         </header>
 
@@ -112,26 +159,37 @@ function ModulePage() {
               {academyModule.lessons.map((lesson, index) => {
                 const done = state.lessons.includes(`${academyModule.slug}::${index}`);
                 return (
-                  <li key={lesson} className="border-b border-border/60 last:border-b-0">
+                  <li
+                    key={lesson}
+                    className={cn(
+                      "flex items-center gap-3 border-b border-border/60 px-2 last:border-b-0",
+                      index === activeIndex && "bg-secondary/60",
+                    )}
+                  >
                     <button
                       type="button"
                       disabled={inProduction}
-                      onClick={() => {
-                        setActiveIndex(index);
-                        toggleLesson(academyModule.slug, index);
-                      }}
-                      className={cn(
-                        "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
-                        inProduction ? "cursor-not-allowed opacity-60" : "hover:bg-secondary",
-                        index === activeIndex && "bg-secondary/60",
-                      )}
+                      onClick={() => toggleLesson(academyModule.slug, index)}
                       aria-pressed={done}
+                      aria-label={done ? `Desmarcar ${lesson}` : `Marcar ${lesson} como concluída`}
+                      className="shrink-0 rounded-full p-2 transition-colors hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {done ? (
-                        <CheckCircle2 className="size-4 shrink-0 text-gold" aria-hidden="true" />
+                        <CheckCircle2 className="size-4 text-gold" aria-hidden="true" />
                       ) : (
-                        <Circle className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                        <Circle className="size-4 text-muted-foreground" aria-hidden="true" />
                       )}
+                    </button>
+
+                    <button
+                      type="button"
+                      disabled={inProduction}
+                      onClick={() => setActiveIndex(index)}
+                      className={cn(
+                        "flex min-w-0 flex-1 items-center gap-3 py-3 pr-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+                        inProduction && "cursor-not-allowed opacity-60",
+                      )}
+                    >
                       <span className="text-xs text-muted-foreground">
                         {String(index + 1).padStart(2, "0")}
                       </span>
