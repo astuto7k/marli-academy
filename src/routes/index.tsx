@@ -1,166 +1,188 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { CalendarClock, Instagram, MessagesSquare, Radio } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, Crown, PlayCircle, Sparkles } from "lucide-react";
 
-import { AcademyHeader } from "@/components/academy/AcademyHeader";
-import { AcademyHero } from "@/components/academy/AcademyHero";
-import { CourseCard } from "@/components/academy/CourseCard";
-import { StatsRow } from "@/components/academy/StatsRow";
+import { AcademyShell } from "@/components/academy/AcademyShell";
+import { GamificationPanel } from "@/components/academy/GamificationPanel";
+import { ModuleCard } from "@/components/academy/ModuleCard";
 import { Button } from "@/components/ui/button";
-import { coursesWithProgress, liveSessions } from "@/data/academy";
-
-const MEMBER_NAME = "Aluna";
+import { Progress } from "@/components/ui/progress";
+import { useProgress } from "@/hooks/use-progress";
+import { getRota, heroCover, modules, nucleos, passePro } from "@/data/academy";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Marli Teixeira Academy | Área de Membros" },
+      { title: "Marli Teixeira Academy | Área de Membros Gamificada" },
       {
         name: "description",
         content:
-          "Área de membros da Marli Teixeira Academy: cursos de micropigmentação, mentorias ao vivo e comunidade exclusiva para profissionais.",
+          "Formação completa em micropigmentação: base técnica, trilhas, construção do negócio, gamificação com níveis e medalhas, e Desbloqueios Pro opcionais.",
       },
       { property: "og:title", content: "Marli Teixeira Academy | Área de Membros" },
       {
         property: "og:description",
         content:
-          "Cursos de micropigmentação, mentorias ao vivo e comunidade exclusiva para profissionais de alto padrão.",
+          "Trilhas técnicas, negócio e escala em uma plataforma gamificada com níveis, medalhas e materiais prontos para aplicar.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: MembersHome,
+  component: Dashboard,
 });
 
-function MembersHome() {
-  const inProgress =
-    coursesWithProgress.find((course) => course.progress > 0 && course.progress < 100) ??
-    coursesWithProgress[0];
+function Dashboard() {
+  const { hydrated, state, points, level, nextLevel, earnedMedals, progressOf, lessonsCompleted } =
+    useProgress();
 
-  const hoursWatched = coursesWithProgress.reduce(
-    (total, course) => total + Math.round((course.hours * course.progress) / 100),
-    0,
-  );
-  const certificates = coursesWithProgress.filter((course) => course.progress >= 100).length;
+  const rota = state.rota ? getRota(state.rota) : null;
+  const available = modules.filter((item) => item.status === "disponivel");
+  const nextModule =
+    (rota
+      ? rota.order
+          .map((slug) => modules.find((item) => item.slug === slug))
+          .find((item) => item && item.status === "disponivel" && progressOf(item.slug).percent < 100)
+      : undefined) ??
+    available.find((item) => progressOf(item.slug).percent < 100) ??
+    available[0];
+
+  const nextProgress = progressOf(nextModule.slug);
+  const totalLessons = available.reduce((sum, item) => sum + item.lessons.length, 0);
+  const globalPercent = totalLessons > 0 ? Math.round((lessonsCompleted / totalLessons) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-background">
-      <AcademyHeader memberName={MEMBER_NAME} />
-      <main>
-        <AcademyHero memberName={MEMBER_NAME} current={inProgress} />
+    <AcademyShell>
+      {/* Hero de boas-vindas */}
+      <section className="relative isolate overflow-hidden">
+        <img
+          src={heroCover}
+          alt="Profissional realizando micropigmentação em estúdio"
+          width={1600}
+          height={912}
+          className="absolute inset-0 size-full object-cover opacity-55"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: "var(--gradient-veil)" }}
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-linear-to-r from-background via-background/85 to-transparent" />
 
-        <div className="mx-auto w-full max-w-7xl space-y-20 px-4 py-16 sm:px-6">
-          <section aria-label="Seu progresso">
-            <StatsRow
-              coursesCount={coursesWithProgress.length}
-              hoursWatched={hoursWatched}
-              certificates={certificates}
-              streakDays={12}
-            />
-          </section>
+        <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 md:py-20">
+          <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-background/50 px-4 py-1.5 text-[0.7rem] uppercase tracking-[0.3em] text-gold backdrop-blur">
+            <Sparkles className="size-3" aria-hidden="true" />
+            {rota ? rota.name : "Comece pelo diagnóstico"}
+          </span>
 
-          <section id="cursos" className="scroll-mt-24 space-y-8">
-            <header className="flex flex-wrap items-end justify-between gap-4">
-              <div>
-                <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Trilhas</p>
-                <h2 className="mt-2 text-3xl font-semibold text-foreground sm:text-4xl">
-                  Seus cursos
-                </h2>
-              </div>
-              <p className="max-w-sm text-sm text-muted-foreground">
-                Conteúdo gravado em alta definição, com protocolos prontos para aplicar na próxima
-                cliente.
-              </p>
-            </header>
+          <h1 className="mt-6 max-w-2xl text-4xl leading-[1.05] font-semibold text-foreground sm:text-5xl">
+            Bem-vinda à <span className="text-gradient-gold">Marli Teixeira Academy</span>
+          </h1>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground">
+            Aprenda diferentes áreas da micropigmentação, construa sua imagem profissional e
+            desenvolva uma operação preparada para conquistar clientes e crescer.
+          </p>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {coursesWithProgress.map((course) => (
-                <CourseCard key={course.slug} course={course} />
-              ))}
+          <div className="mt-8 flex flex-wrap gap-3">
+            {!rota && (
+              <Button asChild className="bg-gradient-gold text-primary-foreground hover:opacity-90">
+                <Link to="/minha-rota">
+                  Fazer diagnóstico inicial
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            )}
+            <Button asChild variant={rota ? "default" : "outline"} className={rota ? "bg-gradient-gold text-primary-foreground hover:opacity-90" : ""}>
+              <Link to="/modulo/$slug" params={{ slug: nextModule.slug }}>
+                <PlayCircle className="size-4" aria-hidden="true" />
+                {nextProgress.percent > 0 ? "Continuar" : "Começar"}: {nextModule.title}
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-10 max-w-md rounded-2xl border border-border/60 bg-card/80 p-5 shadow-luxe backdrop-blur-xl">
+            <div className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>Progresso da formação liberada</span>
+              <span className="text-gold">{hydrated ? globalPercent : 0}%</span>
             </div>
-          </section>
-
-          <section id="mentorias" className="scroll-mt-24 space-y-8">
-            <header>
-              <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Ao vivo</p>
-              <h2 className="mt-2 text-3xl font-semibold text-foreground sm:text-4xl">
-                Mentorias e plantões
-              </h2>
-            </header>
-
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {liveSessions.map((session) => (
-                <div
-                  key={session.id}
-                  className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card p-5 shadow-card"
-                >
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold">
-                    {session.status === "Ao vivo" ? (
-                      <Radio className="size-5" aria-hidden="true" />
-                    ) : (
-                      <CalendarClock className="size-5" aria-hidden="true" />
-                    )}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="truncate text-base font-medium text-foreground">
-                      {session.title}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {session.date} · {session.time}
-                    </p>
-                  </div>
-                  <Button
-                    variant={session.status === "Ao vivo" ? "default" : "outline"}
-                    className="ml-auto shrink-0"
-                  >
-                    {session.status === "Ao vivo" ? "Entrar" : "Lembrar"}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section
-            id="comunidade"
-            className="scroll-mt-24 overflow-hidden rounded-3xl border border-gold/30 bg-card p-8 shadow-luxe sm:p-12"
-          >
-            <div className="flex flex-wrap items-center justify-between gap-8">
-              <div className="max-w-xl space-y-3">
-                <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Comunidade</p>
-                <h2 className="text-3xl font-semibold text-foreground sm:text-4xl">
-                  Você não estuda sozinha
-                </h2>
-                <p className="text-sm text-muted-foreground sm:text-base">
-                  Grupo exclusivo de alunas para trocar casos reais, receber correção de trabalhos e
-                  acompanhar bastidores do estúdio.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <Button className="bg-gradient-gold text-primary-foreground hover:opacity-90">
-                  <MessagesSquare className="size-4" aria-hidden="true" />
-                  Entrar no grupo
-                </Button>
-                <Button variant="outline" asChild>
-                  <a
-                    href="https://www.instagram.com/marlitteixeiramicro/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Instagram className="size-4" aria-hidden="true" />
-                    @marlitteixeiramicro
-                  </a>
-                </Button>
-              </div>
-            </div>
-          </section>
+            <Progress value={hydrated ? globalPercent : 0} className="mt-3 h-1.5 bg-secondary" />
+            <p className="mt-2 text-xs text-muted-foreground">
+              {hydrated ? lessonsCompleted : 0} de {totalLessons} aulas concluídas · {hydrated ? points : 0} pontos
+            </p>
+          </div>
         </div>
-      </main>
+      </section>
 
-      <footer className="border-t border-border/60 py-8">
-        <p className="text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Marli Teixeira Academy · Todos os direitos reservados
-        </p>
-      </footer>
-    </div>
+      <div className="mx-auto w-full max-w-6xl space-y-16 px-4 py-14 sm:px-6">
+        {/* Gamificação */}
+        <section aria-label="Gamificação" className="space-y-6">
+          <header>
+            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Gamificação</p>
+            <h2 className="mt-2 text-3xl font-semibold text-foreground">Seu progresso</h2>
+          </header>
+          <GamificationPanel
+            points={hydrated ? points : 0}
+            level={level}
+            nextLevel={nextLevel}
+            earnedMedalIds={earnedMedals.map((medal) => medal.id)}
+          />
+        </section>
+
+        {/* Núcleos */}
+        {nucleos.map((nucleo) => {
+          const items = modules.filter((item) => item.nucleo === nucleo.id);
+          if (items.length === 0) return null;
+          return (
+            <section key={nucleo.id} className="space-y-6">
+              <header className="flex flex-wrap items-end justify-between gap-4">
+                <div className="max-w-2xl">
+                  <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">
+                    {items.length} {items.length === 1 ? "módulo" : "módulos"}
+                  </p>
+                  <h2 className="mt-2 text-3xl font-semibold text-foreground">{nucleo.label}</h2>
+                  <p className="mt-2 text-sm text-muted-foreground">{nucleo.description}</p>
+                </div>
+              </header>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {items.map((item) => (
+                  <ModuleCard
+                    key={item.slug}
+                    module={item}
+                    percent={hydrated ? progressOf(item.slug).percent : 0}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+
+        {/* Passe Pro */}
+        <section className="overflow-hidden rounded-3xl border border-gold/30 bg-card p-8 shadow-luxe sm:p-12">
+          <div className="flex flex-wrap items-center justify-between gap-8">
+            <div className="max-w-xl space-y-3">
+              <p className="inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-gold">
+                <Crown className="size-3.5" aria-hidden="true" />
+                {passePro.title}
+              </p>
+              <h2 className="text-3xl font-semibold text-foreground">
+                Libere todos os extras de uma vez
+              </h2>
+              <p className="text-sm text-muted-foreground">{passePro.description}</p>
+              <p className="text-xs text-muted-foreground">{passePro.note}</p>
+            </div>
+            <div className="space-y-3">
+              <p className="text-sm text-foreground">{passePro.priceWithCourse}</p>
+              <p className="text-sm text-muted-foreground">{passePro.priceInside}</p>
+              <Button asChild className="bg-gradient-gold text-primary-foreground hover:opacity-90">
+                <Link to="/desbloqueios">
+                  Ver Desbloqueios Pro
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </AcademyShell>
   );
 }
