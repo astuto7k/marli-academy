@@ -65,10 +65,7 @@ export function LessonVideo({
       </div>
 
       <Dialog open={expanded} onOpenChange={setExpanded}>
-        <DialogContent
-          showCloseButton={false}
-          className="max-w-[96vw] border-border/60 bg-background p-3 sm:max-w-[92vw] lg:max-w-6xl"
-        >
+        <DialogContent className="max-w-[96vw] border-border/60 bg-background p-3 sm:max-w-[92vw] lg:max-w-6xl">
           <DialogTitle className="sr-only">{title}</DialogTitle>
           <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-secondary">
             {expanded && (
