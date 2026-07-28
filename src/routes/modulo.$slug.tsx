@@ -279,10 +279,19 @@ function ModulePage() {
             </ul>
 
             {nextModule && (
-              <Button asChild variant="outline" className="w-full">
-                <Link to="/modulo/$slug" params={{ slug: nextModule.slug }}>
-                  Próximo: {nextModule.title}
-                </Link>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!moduleCompleted}
+                title={
+                  moduleCompleted
+                    ? `Ir para: ${nextModule.title}`
+                    : "Conclua todas as aulas para liberar o próximo módulo"
+                }
+                onClick={() => navigate({ to: "/modulo/$slug", params: { slug: nextModule.slug } })}
+                className="w-full"
+              >
+                Próximo: {nextModule.title}
               </Button>
             )}
           </aside>
