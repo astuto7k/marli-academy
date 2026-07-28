@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { AcademyShell } from "@/components/academy/AcademyShell";
+import { LessonVideo } from "@/components/academy/LessonVideo";
 import { ProUnlockCard } from "@/components/academy/ProUnlockCard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
