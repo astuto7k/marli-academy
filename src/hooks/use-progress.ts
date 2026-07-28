@@ -192,6 +192,8 @@ export function useProgress() {
     completedIn,
     progressOf,
     toggleLesson,
+    completeLesson,
+    isLessonDone,
     toggleChallenge,
     setRota,
   };
