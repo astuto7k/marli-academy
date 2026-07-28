@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link, createFileRoute, notFound } from "@tanstack/react-router";
 import {
   ArrowLeft,
@@ -10,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { AcademyShell } from "@/components/academy/AcademyShell";
+import { LessonVideo } from "@/components/academy/LessonVideo";
 import { ProUnlockCard } from "@/components/academy/ProUnlockCard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -48,6 +50,8 @@ function ModulePage() {
   const { slug } = Route.useLoaderData() as { slug: string };
   const academyModule = getModule(slug) as AcademyModule;
   const { hydrated, state, progressOf, toggleLesson, toggleChallenge } = useProgress();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
 
   const progress = progressOf(academyModule.slug);
   const inProduction = academyModule.status === "producao";
@@ -86,20 +90,14 @@ function ModulePage() {
             )}
           </div>
 
-          <div className="relative aspect-video overflow-hidden rounded-2xl border border-border/60 shadow-card">
-            <img
-              src={academyModule.cover}
-              alt={`Capa do módulo ${academyModule.title}`}
-              loading="lazy"
-              width={1024}
-              height={640}
-              className={cn("size-full object-cover opacity-70", inProduction && "grayscale")}
+          <div className="space-y-2">
+            <LessonVideo
+              title={`${academyModule.title} — ${activeLesson ?? "aula"}`}
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-background/40">
-              <span className="flex size-16 items-center justify-center rounded-full bg-gradient-gold text-primary-foreground shadow-luxe">
-                <PlayCircle className="size-7" aria-hidden="true" />
-              </span>
-            </div>
+            <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
+              {activeLesson ?? academyModule.title}
+            </p>
           </div>
         </header>
 
@@ -120,10 +118,14 @@ function ModulePage() {
                     <button
                       type="button"
                       disabled={inProduction}
-                      onClick={() => toggleLesson(academyModule.slug, index)}
+                      onClick={() => {
+                        setActiveIndex(index);
+                        toggleLesson(academyModule.slug, index);
+                      }}
                       className={cn(
                         "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
                         inProduction ? "cursor-not-allowed opacity-60" : "hover:bg-secondary",
+                        index === activeIndex && "bg-secondary/60",
                       )}
                       aria-pressed={done}
                     >
