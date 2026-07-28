@@ -137,6 +137,28 @@ function ModulePage() {
                   Próxima aula
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
+
+                {nextModule && (
+                  <Button
+                    type="button"
+                    disabled={!moduleCompleted}
+                    title={
+                      moduleCompleted
+                        ? `Ir para: ${nextModule.title}`
+                        : "Conclua todas as aulas para liberar o próximo módulo"
+                    }
+                    onClick={() =>
+                      navigate({ to: "/modulo/$slug", params: { slug: nextModule.slug } })
+                    }
+                    className={cn(
+                      "gap-2",
+                      moduleCompleted && "bg-gradient-gold text-primary-foreground hover:opacity-90",
+                    )}
+                  >
+                    Próximo módulo
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </Button>
+                )}
               </div>
             </div>
             {!activeDone && hasNextLesson && (
@@ -144,8 +166,14 @@ function ModulePage() {
                 Marque esta aula como concluída para liberar a próxima.
               </p>
             )}
+            {!hasNextLesson && !moduleCompleted && nextModule && (
+              <p className="text-[0.7rem] text-muted-foreground">
+                Conclua todas as aulas do módulo para liberar o próximo módulo.
+              </p>
+            )}
           </div>
         </header>
+
 
         <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
           {/* Aulas */}
