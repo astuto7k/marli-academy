@@ -72,8 +72,8 @@ function ModulePage() {
           Voltar para o início
         </Link>
 
-        <header className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
-          <div className="space-y-4">
+        <header className="mt-6 space-y-6">
+          <div className="space-y-3">
             <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">
               Módulo {academyModule.number}
             </p>
@@ -91,9 +91,7 @@ function ModulePage() {
           </div>
 
           <div className="space-y-2">
-            <LessonVideo
-              title={`${academyModule.title} — ${activeLesson ?? "aula"}`}
-            />
+            <LessonVideo title={`${academyModule.title} — ${activeLesson ?? "aula"}`} />
             <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
               <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
               {activeLesson ?? academyModule.title}
