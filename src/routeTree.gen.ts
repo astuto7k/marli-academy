@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as MinhaRotaRouteImport } from './routes/minha-rota'
-import { Route as DesbloqueiosRouteImport } from './routes/desbloqueios'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NucleoIdRouteImport } from './routes/nucleo.$id'
@@ -25,11 +24,6 @@ const SobreRoute = SobreRouteImport.update({
 const MinhaRotaRoute = MinhaRotaRouteImport.update({
   id: '/minha-rota',
   path: '/minha-rota',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DesbloqueiosRoute = DesbloqueiosRouteImport.update({
-  id: '/desbloqueios',
-  path: '/desbloqueios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BibliotecaRoute = BibliotecaRouteImport.update({
@@ -56,7 +50,6 @@ const ModuloSlugRoute = ModuloSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -65,7 +58,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -75,7 +67,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -86,7 +77,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/biblioteca'
-    | '/desbloqueios'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -95,7 +85,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/biblioteca'
-    | '/desbloqueios'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -104,7 +93,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/biblioteca'
-    | '/desbloqueios'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -114,7 +102,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BibliotecaRoute: typeof BibliotecaRoute
-  DesbloqueiosRoute: typeof DesbloqueiosRoute
   MinhaRotaRoute: typeof MinhaRotaRoute
   SobreRoute: typeof SobreRoute
   ModuloSlugRoute: typeof ModuloSlugRoute
@@ -135,13 +122,6 @@ declare module '@tanstack/react-router' {
       path: '/minha-rota'
       fullPath: '/minha-rota'
       preLoaderRoute: typeof MinhaRotaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/desbloqueios': {
-      id: '/desbloqueios'
-      path: '/desbloqueios'
-      fullPath: '/desbloqueios'
-      preLoaderRoute: typeof DesbloqueiosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/biblioteca': {
@@ -178,7 +158,6 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BibliotecaRoute: BibliotecaRoute,
-  DesbloqueiosRoute: DesbloqueiosRoute,
   MinhaRotaRoute: MinhaRotaRoute,
   SobreRoute: SobreRoute,
   ModuloSlugRoute: ModuloSlugRoute,

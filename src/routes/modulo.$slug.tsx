@@ -18,7 +18,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useProgress } from "@/hooks/use-progress";
-import { getModule, modules, type AcademyModule } from "@/data/academy";
+import {
+  PREVIEW_UNLOCK_ALL,
+  getModule,
+  modules,
+  type AcademyModule,
+} from "@/data/academy";
 
 export const Route = createFileRoute("/modulo/$slug")({
   loader: ({ params }) => {
@@ -61,7 +66,10 @@ function ModulePage() {
   const progress = progressOf(academyModule.slug);
   const inProduction = academyModule.status === "producao";
   const challengeDone = state.challenges.includes(academyModule.slug);
-  const proUnlocked = state.passePro || state.proUnlocked.includes(academyModule.pro?.id ?? "");
+  const proUnlocked =
+    PREVIEW_UNLOCK_ALL ||
+    state.passePro ||
+    state.proUnlocked.includes(academyModule.pro?.id ?? "");
 
   // Próximo módulo segue a ordem global da formação (não só o mesmo núcleo).
   const nextModule = modules[modules.findIndex((item) => item.slug === academyModule.slug) + 1];
@@ -301,6 +309,7 @@ function ModulePage() {
           <ProUnlockCard
             className="mt-12"
             unlock={academyModule.pro}
+            moduleTitle={academyModule.title}
             unlocked={proUnlocked}
           />
         )}
