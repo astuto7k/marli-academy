@@ -86,20 +86,14 @@ function ModulePage() {
             )}
           </div>
 
-          <div className="relative aspect-video overflow-hidden rounded-2xl border border-border/60 shadow-card">
-            <img
-              src={academyModule.cover}
-              alt={`Capa do módulo ${academyModule.title}`}
-              loading="lazy"
-              width={1024}
-              height={640}
-              className={cn("size-full object-cover opacity-70", inProduction && "grayscale")}
+          <div className="space-y-2">
+            <LessonVideo
+              title={`${academyModule.title} — ${activeLesson ?? "aula"}`}
             />
-            <div className="absolute inset-0 flex items-center justify-center bg-background/40">
-              <span className="flex size-16 items-center justify-center rounded-full bg-gradient-gold text-primary-foreground shadow-luxe">
-                <PlayCircle className="size-7" aria-hidden="true" />
-              </span>
-            </div>
+            <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
+              {activeLesson ?? academyModule.title}
+            </p>
           </div>
         </header>
 
