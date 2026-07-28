@@ -809,6 +809,17 @@ export const sistema20k = {
   ],
 } as const;
 
+/**
+ * Modo de pré-visualização: libera todo o conteúdo (módulos e Desbloqueios Pro)
+ * para revisão interna das páginas. Trocar para `false` antes de vender.
+ */
+export const PREVIEW_UNLOCK_ALL = true;
+
+/** Contato de suporte pelo WhatsApp (trocar pelo número oficial). */
+export const supportWhatsApp =
+  "https://wa.me/5511999999999?text=" +
+  encodeURIComponent("Olá! Preciso de suporte na Marli Teixeira Academy.");
+
 export const passePro = {
   title: "Passe Pro",
   description:
