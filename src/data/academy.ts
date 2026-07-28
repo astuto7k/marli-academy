@@ -346,7 +346,7 @@ export const modules: readonly AcademyModule[] = [
     title: "Camuflagem de olheiras",
     summary: "Tipos de olheiras, seleção segura, limites da técnica e cicatrização.",
     cover: eyesImage,
-    status: "producao",
+    status: "disponivel",
     lessons: [
       "Tipos de olheiras",
       "Avaliação da pele",
@@ -389,7 +389,7 @@ export const modules: readonly AcademyModule[] = [
     title: "Micropigmentação capilar",
     summary: "Linha frontal, densidade, efeito natural e atendimento masculino.",
     cover: heroImage,
-    status: "producao",
+    status: "disponivel",
     lessons: [
       "Avaliação do couro cabeludo",
       "Tipos de queda",
@@ -434,7 +434,7 @@ export const modules: readonly AcademyModule[] = [
     title: "Reconstrução de aréolas",
     summary: "Acolhimento, simetria, efeito tridimensional e comunicação sensível.",
     cover: lipsImage,
-    status: "producao",
+    status: "disponivel",
     lessons: [
       "Avaliação do caso",
       "Acolhimento e comunicação",
@@ -570,7 +570,7 @@ export const modules: readonly AcademyModule[] = [
     title: "Conteúdo e aquisição de clientes",
     summary: "Reels, hooks, produção em lote, indicações e tráfego local.",
     cover: eyesImage,
-    status: "producao",
+    status: "disponivel",
     lessons: [
       "Tipos de conteúdo",
       "Conteúdo de autoridade",
@@ -715,7 +715,7 @@ export const modules: readonly AcademyModule[] = [
     title: "Estruturação da operação",
     summary: "Jornada da cliente, processos, políticas, indicadores e delegação.",
     cover: businessImage,
-    status: "producao",
+    status: "disponivel",
     lessons: [
       "Jornada da cliente",
       "Organização da agenda",
