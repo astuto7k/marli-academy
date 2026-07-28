@@ -49,9 +49,12 @@ export const Route = createFileRoute("/modulo/$slug")({
 function ModulePage() {
   const { slug } = Route.useLoaderData() as { slug: string };
   const academyModule = getModule(slug) as AcademyModule;
-  const { hydrated, state, progressOf, toggleLesson, toggleChallenge } = useProgress();
+  const { hydrated, state, progressOf, toggleLesson, completeLesson, toggleChallenge } =
+    useProgress();
   const [activeIndex, setActiveIndex] = useState(0);
   const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
+  const activeDone = state.lessons.includes(`${academyModule.slug}::${activeIndex}`);
+  const hasNextLesson = activeIndex < academyModule.lessons.length - 1;
 
   const progress = progressOf(academyModule.slug);
   const inProduction = academyModule.status === "producao";
