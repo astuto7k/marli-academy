@@ -6,7 +6,7 @@ import { AcademyHeader } from "@/components/academy/AcademyHeader";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { getCourse, type Lesson } from "@/data/academy";
+import { getCourse, type CourseWithProgress, type Lesson } from "@/data/academy";
 
 export const Route = createFileRoute("/curso/$slug")({
   loader: ({ params }) => {
@@ -36,7 +36,7 @@ export const Route = createFileRoute("/curso/$slug")({
 });
 
 function CoursePage() {
-  const { course } = Route.useLoaderData();
+  const { course } = Route.useLoaderData() as { course: CourseWithProgress };
   const firstPending =
     course.modules.flatMap((module) => module.lessons).find((lesson) => !lesson.completed) ??
     course.modules[0].lessons[0];
