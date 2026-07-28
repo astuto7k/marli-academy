@@ -62,8 +62,9 @@ function ModulePage() {
   const challengeDone = state.challenges.includes(academyModule.slug);
   const proUnlocked = state.passePro || state.proUnlocked.includes(academyModule.pro?.id ?? "");
 
-  const siblings = modules.filter((item) => item.nucleo === academyModule.nucleo);
-  const nextModule = siblings[siblings.findIndex((item) => item.slug === academyModule.slug) + 1];
+  // Próximo módulo segue a ordem global da formação (não só o mesmo núcleo).
+  const nextModule = modules[modules.findIndex((item) => item.slug === academyModule.slug) + 1];
+  const moduleCompleted = hydrated && progress.completed;
 
   return (
     <AcademyShell>
