@@ -29,6 +29,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { supportWhatsApp } from "@/data/academy";
 
 interface NavItem {
   readonly title: string;
