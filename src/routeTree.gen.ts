@@ -9,48 +9,128 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MinhaRotaRouteImport } from './routes/minha-rota'
+import { Route as DesbloqueiosRouteImport } from './routes/desbloqueios'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as CursoSlugRouteImport } from './routes/curso.$slug'
+import { Route as NucleoIdRouteImport } from './routes/nucleo.$id'
+import { Route as ModuloSlugRouteImport } from './routes/modulo.$slug'
 
+const MinhaRotaRoute = MinhaRotaRouteImport.update({
+  id: '/minha-rota',
+  path: '/minha-rota',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesbloqueiosRoute = DesbloqueiosRouteImport.update({
+  id: '/desbloqueios',
+  path: '/desbloqueios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CursoSlugRoute = CursoSlugRouteImport.update({
-  id: '/curso/$slug',
-  path: '/curso/$slug',
+const NucleoIdRoute = NucleoIdRouteImport.update({
+  id: '/nucleo/$id',
+  path: '/nucleo/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModuloSlugRoute = ModuloSlugRouteImport.update({
+  id: '/modulo/$slug',
+  path: '/modulo/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/curso/$slug': typeof CursoSlugRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
+  '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/curso/$slug': typeof CursoSlugRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
+  '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/curso/$slug': typeof CursoSlugRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
+  '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/curso/$slug'
+  fullPaths:
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/curso/$slug'
-  id: '__root__' | '/' | '/curso/$slug'
+  to:
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CursoSlugRoute: typeof CursoSlugRoute
+  BibliotecaRoute: typeof BibliotecaRoute
+  DesbloqueiosRoute: typeof DesbloqueiosRoute
+  MinhaRotaRoute: typeof MinhaRotaRoute
+  ModuloSlugRoute: typeof ModuloSlugRoute
+  NucleoIdRoute: typeof NucleoIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/minha-rota': {
+      id: '/minha-rota'
+      path: '/minha-rota'
+      fullPath: '/minha-rota'
+      preLoaderRoute: typeof MinhaRotaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/desbloqueios': {
+      id: '/desbloqueios'
+      path: '/desbloqueios'
+      fullPath: '/desbloqueios'
+      preLoaderRoute: typeof DesbloqueiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -58,11 +138,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/curso/$slug': {
-      id: '/curso/$slug'
-      path: '/curso/$slug'
-      fullPath: '/curso/$slug'
-      preLoaderRoute: typeof CursoSlugRouteImport
+    '/nucleo/$id': {
+      id: '/nucleo/$id'
+      path: '/nucleo/$id'
+      fullPath: '/nucleo/$id'
+      preLoaderRoute: typeof NucleoIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modulo/$slug': {
+      id: '/modulo/$slug'
+      path: '/modulo/$slug'
+      fullPath: '/modulo/$slug'
+      preLoaderRoute: typeof ModuloSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -70,7 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CursoSlugRoute: CursoSlugRoute,
+  BibliotecaRoute: BibliotecaRoute,
+  DesbloqueiosRoute: DesbloqueiosRoute,
+  MinhaRotaRoute: MinhaRotaRoute,
+  ModuloSlugRoute: ModuloSlugRoute,
+  NucleoIdRoute: NucleoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
