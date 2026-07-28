@@ -76,15 +76,23 @@ function Desbloqueios() {
         <section className="rounded-2xl border border-border/60 bg-card p-6 shadow-card">
           <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Programa avançado</p>
           <h2 className="mt-2 text-2xl font-semibold text-foreground">{sistema20k.title}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{sistema20k.description}</p>
-          <ul className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
-            {sistema20k.items.map((item) => (
-              <li key={item} className="text-sm text-foreground/85">
-                · {item}
-              </li>
+          <p className="mt-2 text-sm text-muted-foreground">{sistema20k.positioning}</p>
+          <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {sistema20k.parts.map((part) => (
+              <div key={part.title} className="rounded-xl border border-border/60 p-4">
+                <p className="text-sm font-medium text-foreground">{part.title}</p>
+                <ul className="mt-2 space-y-1">
+                  {part.items.map((item) => (
+                    <li key={item} className="text-xs text-muted-foreground">
+                      · {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             ))}
-          </ul>
+          </div>
           <p className="mt-4 text-sm text-gold">{sistema20k.priceLabel}</p>
+          <p className="mt-2 text-[0.7rem] text-muted-foreground">{sistema20k.disclaimer}</p>
         </section>
       </div>
     </AcademyShell>
