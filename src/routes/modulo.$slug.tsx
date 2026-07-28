@@ -118,10 +118,14 @@ function ModulePage() {
                     <button
                       type="button"
                       disabled={inProduction}
-                      onClick={() => toggleLesson(academyModule.slug, index)}
+                      onClick={() => {
+                        setActiveIndex(index);
+                        toggleLesson(academyModule.slug, index);
+                      }}
                       className={cn(
                         "flex w-full items-center gap-3 px-4 py-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
                         inProduction ? "cursor-not-allowed opacity-60" : "hover:bg-secondary",
+                        index === activeIndex && "bg-secondary/60",
                       )}
                       aria-pressed={done}
                     >
