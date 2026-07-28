@@ -50,6 +50,8 @@ function ModulePage() {
   const { slug } = Route.useLoaderData() as { slug: string };
   const academyModule = getModule(slug) as AcademyModule;
   const { hydrated, state, progressOf, toggleLesson, toggleChallenge } = useProgress();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
 
   const progress = progressOf(academyModule.slug);
   const inProduction = academyModule.status === "producao";
