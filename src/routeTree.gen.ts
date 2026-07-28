@@ -9,12 +9,36 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as MinhaRotaRouteImport } from './routes/minha-rota'
+import { Route as DesbloqueiosRouteImport } from './routes/desbloqueios'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NucleoIdRouteImport } from './routes/nucleo.$id'
 import { Route as ModuloSlugRouteImport } from './routes/modulo.$slug'
 
+const MinhaRotaRoute = MinhaRotaRouteImport.update({
+  id: '/minha-rota',
+  path: '/minha-rota',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesbloqueiosRoute = DesbloqueiosRouteImport.update({
+  id: '/desbloqueios',
+  path: '/desbloqueios',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NucleoIdRoute = NucleoIdRouteImport.update({
+  id: '/nucleo/$id',
+  path: '/nucleo/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModuloSlugRoute = ModuloSlugRouteImport.update({
@@ -25,37 +49,100 @@ const ModuloSlugRoute = ModuloSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
   '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
   '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/desbloqueios': typeof DesbloqueiosRoute
+  '/minha-rota': typeof MinhaRotaRoute
   '/modulo/$slug': typeof ModuloSlugRoute
+  '/nucleo/$id': typeof NucleoIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/modulo/$slug'
+  fullPaths:
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/modulo/$slug'
-  id: '__root__' | '/' | '/modulo/$slug'
+  to:
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/biblioteca'
+    | '/desbloqueios'
+    | '/minha-rota'
+    | '/modulo/$slug'
+    | '/nucleo/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BibliotecaRoute: typeof BibliotecaRoute
+  DesbloqueiosRoute: typeof DesbloqueiosRoute
+  MinhaRotaRoute: typeof MinhaRotaRoute
   ModuloSlugRoute: typeof ModuloSlugRoute
+  NucleoIdRoute: typeof NucleoIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/minha-rota': {
+      id: '/minha-rota'
+      path: '/minha-rota'
+      fullPath: '/minha-rota'
+      preLoaderRoute: typeof MinhaRotaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/desbloqueios': {
+      id: '/desbloqueios'
+      path: '/desbloqueios'
+      fullPath: '/desbloqueios'
+      preLoaderRoute: typeof DesbloqueiosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nucleo/$id': {
+      id: '/nucleo/$id'
+      path: '/nucleo/$id'
+      fullPath: '/nucleo/$id'
+      preLoaderRoute: typeof NucleoIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modulo/$slug': {
@@ -70,7 +157,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BibliotecaRoute: BibliotecaRoute,
+  DesbloqueiosRoute: DesbloqueiosRoute,
+  MinhaRotaRoute: MinhaRotaRoute,
   ModuloSlugRoute: ModuloSlugRoute,
+  NucleoIdRoute: NucleoIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
