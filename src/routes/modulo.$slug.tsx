@@ -52,6 +52,7 @@ function ModulePage() {
   const academyModule = getModule(slug) as AcademyModule;
   const { hydrated, state, progressOf, toggleLesson, completeLesson, toggleChallenge } =
     useProgress();
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
   const activeDone = state.lessons.includes(`${academyModule.slug}::${activeIndex}`);
