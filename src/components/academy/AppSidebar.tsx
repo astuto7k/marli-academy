@@ -13,6 +13,7 @@ import {
   Rocket,
   Route as RouteIcon,
   ShoppingBag,
+  Sparkles,
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
