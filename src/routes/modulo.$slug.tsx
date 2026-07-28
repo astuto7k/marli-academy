@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, createFileRoute, notFound } from "@tanstack/react-router";
+import { Link, createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import {
   ArrowLeft,
   ArrowRight,
@@ -52,6 +52,7 @@ function ModulePage() {
   const academyModule = getModule(slug) as AcademyModule;
   const { hydrated, state, progressOf, toggleLesson, completeLesson, toggleChallenge } =
     useProgress();
+  const navigate = useNavigate();
   const [activeIndex, setActiveIndex] = useState(0);
   const activeLesson = academyModule.lessons[activeIndex] ?? academyModule.lessons[0];
   const activeDone = state.lessons.includes(`${academyModule.slug}::${activeIndex}`);
@@ -62,8 +63,9 @@ function ModulePage() {
   const challengeDone = state.challenges.includes(academyModule.slug);
   const proUnlocked = state.passePro || state.proUnlocked.includes(academyModule.pro?.id ?? "");
 
-  const siblings = modules.filter((item) => item.nucleo === academyModule.nucleo);
-  const nextModule = siblings[siblings.findIndex((item) => item.slug === academyModule.slug) + 1];
+  // Próximo módulo segue a ordem global da formação (não só o mesmo núcleo).
+  const nextModule = modules[modules.findIndex((item) => item.slug === academyModule.slug) + 1];
+  const moduleCompleted = hydrated && progress.completed;
 
   return (
     <AcademyShell>
@@ -136,6 +138,28 @@ function ModulePage() {
                   Próxima aula
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
+
+                {nextModule && (
+                  <Button
+                    type="button"
+                    disabled={!moduleCompleted}
+                    title={
+                      moduleCompleted
+                        ? `Ir para: ${nextModule.title}`
+                        : "Conclua todas as aulas para liberar o próximo módulo"
+                    }
+                    onClick={() =>
+                      navigate({ to: "/modulo/$slug", params: { slug: nextModule.slug } })
+                    }
+                    className={cn(
+                      "gap-2",
+                      moduleCompleted && "bg-gradient-gold text-primary-foreground hover:opacity-90",
+                    )}
+                  >
+                    Próximo módulo
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </Button>
+                )}
               </div>
             </div>
             {!activeDone && hasNextLesson && (
@@ -143,8 +167,14 @@ function ModulePage() {
                 Marque esta aula como concluída para liberar a próxima.
               </p>
             )}
+            {!hasNextLesson && !moduleCompleted && nextModule && (
+              <p className="text-[0.7rem] text-muted-foreground">
+                Conclua todas as aulas do módulo para liberar o próximo módulo.
+              </p>
+            )}
           </div>
         </header>
+
 
         <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
           {/* Aulas */}
@@ -249,10 +279,19 @@ function ModulePage() {
             </ul>
 
             {nextModule && (
-              <Button asChild variant="outline" className="w-full">
-                <Link to="/modulo/$slug" params={{ slug: nextModule.slug }}>
-                  Próximo: {nextModule.title}
-                </Link>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!moduleCompleted}
+                title={
+                  moduleCompleted
+                    ? `Ir para: ${nextModule.title}`
+                    : "Conclua todas as aulas para liberar o próximo módulo"
+                }
+                onClick={() => navigate({ to: "/modulo/$slug", params: { slug: nextModule.slug } })}
+                className="w-full"
+              >
+                Próximo: {nextModule.title}
               </Button>
             )}
           </aside>
