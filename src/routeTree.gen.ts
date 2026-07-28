@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as MinhaRotaRouteImport } from './routes/minha-rota'
 import { Route as DesbloqueiosRouteImport } from './routes/desbloqueios'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
@@ -16,6 +17,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as NucleoIdRouteImport } from './routes/nucleo.$id'
 import { Route as ModuloSlugRouteImport } from './routes/modulo.$slug'
 
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MinhaRotaRoute = MinhaRotaRouteImport.update({
   id: '/minha-rota',
   path: '/minha-rota',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/biblioteca': typeof BibliotecaRoute
   '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
+  '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
   '/nucleo/$id': typeof NucleoIdRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/biblioteca': typeof BibliotecaRoute
   '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
+  '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
   '/nucleo/$id': typeof NucleoIdRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/biblioteca': typeof BibliotecaRoute
   '/desbloqueios': typeof DesbloqueiosRoute
   '/minha-rota': typeof MinhaRotaRoute
+  '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
   '/nucleo/$id': typeof NucleoIdRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/biblioteca'
     | '/desbloqueios'
     | '/minha-rota'
+    | '/sobre'
     | '/modulo/$slug'
     | '/nucleo/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/biblioteca'
     | '/desbloqueios'
     | '/minha-rota'
+    | '/sobre'
     | '/modulo/$slug'
     | '/nucleo/$id'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/biblioteca'
     | '/desbloqueios'
     | '/minha-rota'
+    | '/sobre'
     | '/modulo/$slug'
     | '/nucleo/$id'
   fileRoutesById: FileRoutesById
@@ -104,12 +116,20 @@ export interface RootRouteChildren {
   BibliotecaRoute: typeof BibliotecaRoute
   DesbloqueiosRoute: typeof DesbloqueiosRoute
   MinhaRotaRoute: typeof MinhaRotaRoute
+  SobreRoute: typeof SobreRoute
   ModuloSlugRoute: typeof ModuloSlugRoute
   NucleoIdRoute: typeof NucleoIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/minha-rota': {
       id: '/minha-rota'
       path: '/minha-rota'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   BibliotecaRoute: BibliotecaRoute,
   DesbloqueiosRoute: DesbloqueiosRoute,
   MinhaRotaRoute: MinhaRotaRoute,
+  SobreRoute: SobreRoute,
   ModuloSlugRoute: ModuloSlugRoute,
   NucleoIdRoute: NucleoIdRoute,
 }
