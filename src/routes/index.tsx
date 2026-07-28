@@ -1,13 +1,12 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Crown, PlayCircle, Sparkles } from "lucide-react";
+import { ArrowRight, PlayCircle, Sparkles } from "lucide-react";
 
 import { AcademyShell } from "@/components/academy/AcademyShell";
 import { GamificationPanel } from "@/components/academy/GamificationPanel";
-import { ModuleCard } from "@/components/academy/ModuleCard";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/hooks/use-progress";
-import { getRota, heroCover, modules, nucleos, passePro } from "@/data/academy";
+import { getRota, heroCover, modules, nucleos } from "@/data/academy";
 
 export const Route = createFileRoute("/")({
   head: () => ({
