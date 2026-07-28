@@ -127,61 +127,64 @@ function Dashboard() {
           />
         </section>
 
-        {/* Núcleos */}
-        {nucleos.map((nucleo) => {
-          const items = modules.filter((item) => item.nucleo === nucleo.id);
-          if (items.length === 0) return null;
-          return (
-            <section key={nucleo.id} className="space-y-6">
-              <header className="flex flex-wrap items-end justify-between gap-4">
-                <div className="max-w-2xl">
+        {/* Núcleos: um card por núcleo (os módulos ficam dentro do núcleo) */}
+        <section aria-label="Núcleos da formação" className="space-y-6">
+          <header className="max-w-2xl">
+            <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Formação</p>
+            <h2 className="mt-2 text-3xl font-semibold text-foreground">Núcleos</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Tudo liberado: entre no núcleo e siga módulo a módulo na ordem sugerida.
+            </p>
+          </header>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {nucleos.map((nucleo) => {
+              const items = modules.filter((item) => item.nucleo === nucleo.id);
+              if (items.length === 0) return null;
+
+              const totals = items.reduce(
+                (acc, item) => {
+                  const progress = progressOf(item.slug);
+                  return { done: acc.done + progress.done, total: acc.total + progress.total };
+                },
+                { done: 0, total: 0 },
+              );
+              const percent =
+                totals.total > 0 ? Math.round((totals.done / totals.total) * 100) : 0;
+
+              return (
+                <Link
+                  key={nucleo.id}
+                  to="/nucleo/$id"
+                  params={{ id: nucleo.id }}
+                  className="group flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-gold/50 hover:shadow-luxe"
+                >
                   <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">
                     {items.length} {items.length === 1 ? "módulo" : "módulos"}
                   </p>
-                  <h2 className="mt-2 text-3xl font-semibold text-foreground">{nucleo.label}</h2>
-                  <p className="mt-2 text-sm text-muted-foreground">{nucleo.description}</p>
-                </div>
-              </header>
+                  <h3 className="text-xl font-semibold text-foreground">{nucleo.label}</h3>
+                  <p className="flex-1 text-sm text-muted-foreground">{nucleo.description}</p>
 
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {items.map((item) => (
-                  <ModuleCard
-                    key={item.slug}
-                    module={item}
-                    percent={hydrated ? progressOf(item.slug).percent : 0}
-                  />
-                ))}
-              </div>
-            </section>
-          );
-        })}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>
+                        {hydrated ? totals.done : 0} de {totals.total} aulas
+                      </span>
+                      <span className="text-gold">{hydrated ? percent : 0}%</span>
+                    </div>
+                    <Progress value={hydrated ? percent : 0} className="h-1.5 bg-secondary" />
+                  </div>
 
-        {/* Passe Pro */}
-        <section className="overflow-hidden rounded-3xl border border-gold/30 bg-card p-8 shadow-luxe sm:p-12">
-          <div className="flex flex-wrap items-center justify-between gap-8">
-            <div className="max-w-xl space-y-3">
-              <p className="inline-flex items-center gap-2 text-[0.65rem] uppercase tracking-[0.3em] text-gold">
-                <Crown className="size-3.5" aria-hidden="true" />
-                {passePro.title}
-              </p>
-              <h2 className="text-3xl font-semibold text-foreground">
-                Libere todos os extras de uma vez
-              </h2>
-              <p className="text-sm text-muted-foreground">{passePro.description}</p>
-              <p className="text-xs text-muted-foreground">{passePro.note}</p>
-            </div>
-            <div className="space-y-3">
-              <p className="text-sm text-foreground">{passePro.priceWithCourse}</p>
-              <p className="text-sm text-muted-foreground">{passePro.priceInside}</p>
-              <Button asChild className="bg-gradient-gold text-primary-foreground hover:opacity-90">
-                <Link to="/desbloqueios">
-                  Ver Desbloqueios Pro
-                  <ArrowRight className="size-4" aria-hidden="true" />
+                  <span className="inline-flex items-center gap-2 text-sm font-medium text-gold">
+                    Acessar núcleo
+                    <ArrowRight className="size-4" aria-hidden="true" />
+                  </span>
                 </Link>
-              </Button>
-            </div>
+              );
+            })}
           </div>
         </section>
+
       </div>
     </AcademyShell>
   );
