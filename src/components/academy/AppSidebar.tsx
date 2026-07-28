@@ -36,6 +36,8 @@ interface NavItem {
   readonly icon: LucideIcon;
   /** Itens ainda não construídos ficam visíveis, porém desabilitados. */
   readonly soon?: boolean;
+  /** Link externo (abre em nova aba), ex.: suporte no WhatsApp. */
+  readonly external?: boolean;
 }
 
 const MAIN_ITEMS: readonly NavItem[] = [
@@ -52,12 +54,11 @@ const CONTENT_ITEMS: readonly NavItem[] = [
 ];
 
 const EXTRA_ITEMS: readonly NavItem[] = [
-  { title: "Desbloqueios Pro", url: "/desbloqueios", icon: Crown },
   { title: "Biblioteca de materiais", url: "/biblioteca", icon: Library },
+  { title: "Suporte no WhatsApp", url: supportWhatsApp, icon: LifeBuoy, external: true },
   { title: "Comunidade", url: "/comunidade", icon: Users, soon: true },
   { title: "Aulas ao vivo", url: "/ao-vivo", icon: Radio, soon: true },
   { title: "Certificados", url: "/certificados", icon: Award, soon: true },
-  { title: "Suporte", url: "/suporte", icon: LifeBuoy, soon: true },
   { title: "Loja da aluna", url: "/loja", icon: ShoppingBag, soon: true },
 ];
 
@@ -68,7 +69,7 @@ export function AppSidebar() {
 
   const renderItems = (items: readonly NavItem[]) =>
     items.map((item) => {
-      const isActive = pathname === item.url;
+      const isActive = !item.external && pathname === item.url;
       return (
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton asChild={!item.soon} isActive={isActive} disabled={item.soon}>
@@ -82,6 +83,16 @@ export function AppSidebar() {
                   </>
                 )}
               </span>
+            ) : item.external ? (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex items-center gap-2"
+              >
+                <item.icon className="size-4" aria-hidden="true" />
+                {!collapsed && <span className="truncate">{item.title}</span>}
+              </a>
             ) : (
               <Link to={item.url} className="flex items-center gap-2">
                 <item.icon className="size-4" aria-hidden="true" />
