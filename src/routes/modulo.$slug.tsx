@@ -93,12 +93,55 @@ function ModulePage() {
             )}
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             <LessonVideo title={`${academyModule.title} — ${activeLesson ?? "aula"}`} />
-            <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
-              <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
-              {activeLesson ?? academyModule.title}
-            </p>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
+                <PlayCircle className="size-3.5 text-gold" aria-hidden="true" />
+                Aula {activeIndex + 1} de {academyModule.lessons.length} ·{" "}
+                {activeLesson ?? academyModule.title}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-2">
+                <Button
+                  type="button"
+                  variant={activeDone ? "outline" : "default"}
+                  disabled={inProduction}
+                  onClick={() => toggleLesson(academyModule.slug, activeIndex)}
+                  className={cn(
+                    "gap-2",
+                    !activeDone && "bg-gradient-gold text-primary-foreground hover:opacity-90",
+                  )}
+                >
+                  <CheckCircle2 className="size-4" aria-hidden="true" />
+                  {activeDone ? "Aula concluída (+10 pts)" : "Marcar como concluída"}
+                </Button>
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  disabled={inProduction || !hasNextLesson || !activeDone}
+                  title={
+                    !activeDone ? "Marque a aula como concluída para avançar" : "Ir para a próxima aula"
+                  }
+                  onClick={() => {
+                    completeLesson(academyModule.slug, activeIndex);
+                    setActiveIndex((current) =>
+                      Math.min(current + 1, academyModule.lessons.length - 1),
+                    );
+                  }}
+                  className="gap-2"
+                >
+                  Próxima aula
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+              </div>
+            </div>
+            {!activeDone && hasNextLesson && (
+              <p className="text-[0.7rem] text-muted-foreground">
+                Marque esta aula como concluída para liberar a próxima.
+              </p>
+            )}
           </div>
         </header>
 
