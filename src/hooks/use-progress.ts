@@ -63,6 +63,7 @@ export function lessonKey(moduleSlug: string, lessonIndex: number): string {
  * leem a MESMA instância, então marcar uma aula atualiza os pontos lá em cima.
  */
 let storeState: ProgressState = EMPTY_STATE;
+let hydratedOnce = false;
 const listeners = new Set<() => void>();
 
 function emit() {
