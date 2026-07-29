@@ -17,11 +17,11 @@ export const Route = createFileRoute("/")({
         content:
           "Formação completa em micropigmentação: base técnica, trilhas, construção do negócio, gamificação com níveis e medalhas, e Desbloqueios Pro opcionais.",
       },
-      { property: "og:title", content: "Marli Teixeira Academy | Área de Membros" },
+      { property: "og:title", content: "Marli Teixeira Academy | Área de Membros Gamificada" },
       {
         property: "og:description",
         content:
-          "Trilhas técnicas, negócio e escala em uma plataforma gamificada com níveis, medalhas e materiais prontos para aplicar.",
+          "Formação completa em micropigmentação: base técnica, trilhas, construção do negócio, gamificação com níveis e medalhas, e Desbloqueios Pro opcionais.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
