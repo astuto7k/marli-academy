@@ -109,20 +109,25 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarContent>
         <div className="flex items-center gap-2.5 px-3 py-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-gold text-primary-foreground">
-            <Crown className="size-4" aria-hidden="true" />
-          </span>
-          {!collapsed && (
-            <span className="leading-tight">
-              <span className="block font-display text-base font-semibold text-foreground">
-                Marli Teixeira
-              </span>
-              <span className="block text-[0.6rem] uppercase tracking-[0.3em] text-gold">
+          {collapsed ? (
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-gold text-primary-foreground">
+              <Crown className="size-4" aria-hidden="true" />
+            </span>
+          ) : (
+            <span className="block w-full">
+              <img
+                src={mtLogo.url}
+                alt="Marli Teixeira"
+                className="h-12 w-auto object-contain"
+                loading="lazy"
+              />
+              <span className="mt-1 block text-[0.6rem] uppercase tracking-[0.3em] text-gold">
                 Academy
               </span>
             </span>
           )}
         </div>
+
 
         <SidebarGroup>
           <SidebarGroupContent>
