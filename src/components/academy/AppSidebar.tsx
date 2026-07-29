@@ -29,7 +29,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import mtLogo from "@/assets/mt-logo.png.asset.json";
 import { supportWhatsApp } from "@/data/academy";
+
 
 interface NavItem {
   readonly title: string;
