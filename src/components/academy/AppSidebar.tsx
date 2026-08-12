@@ -46,7 +46,7 @@ interface NavItem {
 const MAIN_ITEMS: readonly NavItem[] = [
   { title: "Início", url: "/", icon: Home },
   { title: "Minha rota", url: "/minha-rota", icon: RouteIcon },
-  { title: "Quem é Marli", url: "/sobre", icon: Sparkles },
+  { title: "Quem é a Marli", url: "/sobre", icon: Sparkles },
 ];
 
 const CONTENT_ITEMS: readonly NavItem[] = [
