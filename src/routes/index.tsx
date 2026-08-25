@@ -75,7 +75,7 @@ function Dashboard() {
             {rota ? rota.name : "Sua jornada profissional começa aqui"}
           </span>
 
-          <h1 className="mt-6 max-w-2xl text-4xl leading-[1.05] font-semibold text-foreground sm:text-5xl">
+          <h1 className="mt-6 max-w-3xl font-sans text-4xl leading-[1.08] font-light tracking-[0.015em] text-foreground sm:text-5xl">
             Bem-vinda à <span className="text-gradient-gold">Marli Teixeira Academy</span>
           </h1>
           <p className="mt-4 max-w-xl text-base text-muted-foreground">
