@@ -38,6 +38,7 @@ function LoginPage() {
           <p className="text-[0.65rem] uppercase tracking-[0.3em] text-gold">Área de membros</p>
           <h1 className="mt-3 text-3xl font-semibold text-foreground">Bem-vinda de volta</h1>
           <p className="mt-2 text-sm text-muted-foreground">Entre para continuar sua formação.</p>
+          <p className="mt-3 text-xs text-gold/80">Ambiente de teste: use qualquer senha.</p>
         </div>
 
         <form className="space-y-4" onSubmit={handleSubmit}>

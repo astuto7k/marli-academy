@@ -64,13 +64,18 @@ export function AuthProvider({ children }: { readonly children: ReactNode }) {
 
   const login = useCallback(async (email: string, password: string) => {
     const normalizedEmail = email.trim().toLowerCase();
-    const passwordHash = await hashPassword(password);
-    const found = readUsers().find(
-      (user) => user.email === normalizedEmail && user.passwordHash === passwordHash,
-    );
-    if (!found) throw new Error("E-mail ou senha inválidos.");
-
-    const session = { name: found.name, email: found.email };
+    if (!normalizedEmail) throw new Error("Informe um e-mail para entrar.");
+    // Modo de teste: qualquer senha não vazia é aceita enquanto a plataforma é validada.
+    if (!password.trim()) throw new Error("Informe uma senha para entrar.");
+    const found = readUsers().find((user) => user.email === normalizedEmail);
+    const session = {
+      name: found?.name ?? normalizedEmail.split("@")[0] ?? "Aluna",
+      email: normalizedEmail,
+    };
+    if (!found) {
+      const testUser: StoredMember = { ...session, passwordHash: "test-mode" };
+      localStorage.setItem(USERS_KEY, JSON.stringify([...readUsers(), testUser]));
+    }
     localStorage.setItem(SESSION_KEY, JSON.stringify(session));
     setMember(session);
   }, []);

@@ -5,7 +5,6 @@ import {
   Crown,
   GraduationCap,
   Home,
-  LifeBuoy,
   Layers,
   Library,
   Lock,
@@ -29,9 +28,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import mtLogo from "@/assets/mt-logo.png.asset.json";
-import { supportWhatsApp } from "@/data/academy";
-
+import mtLogo from "@/assets/mt-logo.png";
 
 interface NavItem {
   readonly title: string;
@@ -58,7 +55,6 @@ const CONTENT_ITEMS: readonly NavItem[] = [
 
 const EXTRA_ITEMS: readonly NavItem[] = [
   { title: "Biblioteca de materiais", url: "/biblioteca", icon: Library },
-  { title: "Suporte no WhatsApp", url: supportWhatsApp, icon: LifeBuoy, external: true },
   { title: "Comunidade", url: "/comunidade", icon: Users, soon: true },
   { title: "Aulas ao vivo", url: "/ao-vivo", icon: Radio, soon: true },
   { title: "Certificados", url: "/certificados", icon: Award, soon: true },
@@ -118,7 +114,7 @@ export function AppSidebar() {
           ) : (
             <span className="block w-full">
               <img
-                src={mtLogo.url}
+                src={mtLogo}
                 alt="Marli Teixeira"
                 className="h-12 w-auto object-contain"
                 loading="lazy"
@@ -129,7 +125,6 @@ export function AppSidebar() {
             </span>
           )}
         </div>
-
 
         <SidebarGroup>
           <SidebarGroupContent>

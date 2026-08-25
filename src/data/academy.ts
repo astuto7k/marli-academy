@@ -800,12 +800,59 @@ export const sistema20k = {
   disclaimer:
     "Os resultados dependem de preço, demanda, execução, localização, investimento e conversão. É um sistema de estruturação, não uma garantia de faturamento.",
   parts: [
-    { title: "Parte 1 · Matemática da meta", items: ["Ticket médio", "Capacidade semanal", "Margem", "Meta de leads", "Taxas de agendamento, comparecimento e recompra"] },
-    { title: "Parte 2 · Oferta", items: ["Serviço principal", "Oferta de entrada", "Serviços complementares", "Pacotes", "Aumento de ticket", "Campanhas sazonais"] },
-    { title: "Parte 3 · Aquisição previsível", items: ["Conteúdo", "Anúncios locais", "Indicação", "Parcerias", "Reativação"] },
-    { title: "Parte 4 · Automação", items: ["Captura", "Qualificação", "Follow-up", "Confirmação", "Lembrete", "Pós-venda", "Reativação", "Pedido de indicação"] },
-    { title: "Parte 5 · Operação", items: ["Agenda", "Capacidade", "Processos", "Assistente", "Métricas", "Rotina semanal"] },
-    { title: "Parte 6 · Escala", items: ["Quando aumentar anúncios", "Quando contratar", "Quando aumentar preço", "Quando abrir segunda agenda", "Quando lançar workshop", "Como sair do operacional"] },
+    {
+      title: "Parte 1 · Matemática da meta",
+      items: [
+        "Ticket médio",
+        "Capacidade semanal",
+        "Margem",
+        "Meta de leads",
+        "Taxas de agendamento, comparecimento e recompra",
+      ],
+    },
+    {
+      title: "Parte 2 · Oferta",
+      items: [
+        "Serviço principal",
+        "Oferta de entrada",
+        "Serviços complementares",
+        "Pacotes",
+        "Aumento de ticket",
+        "Campanhas sazonais",
+      ],
+    },
+    {
+      title: "Parte 3 · Aquisição previsível",
+      items: ["Conteúdo", "Anúncios locais", "Indicação", "Parcerias", "Reativação"],
+    },
+    {
+      title: "Parte 4 · Automação",
+      items: [
+        "Captura",
+        "Qualificação",
+        "Follow-up",
+        "Confirmação",
+        "Lembrete",
+        "Pós-venda",
+        "Reativação",
+        "Pedido de indicação",
+      ],
+    },
+    {
+      title: "Parte 5 · Operação",
+      items: ["Agenda", "Capacidade", "Processos", "Assistente", "Métricas", "Rotina semanal"],
+    },
+    {
+      title: "Parte 6 · Escala",
+      items: [
+        "Quando aumentar anúncios",
+        "Quando contratar",
+        "Quando aumentar preço",
+        "Quando abrir segunda agenda",
+        "Quando lançar workshop",
+        "Como sair do operacional",
+      ],
+    },
   ],
 } as const;
 
@@ -814,11 +861,6 @@ export const sistema20k = {
  * para revisão interna das páginas. Trocar para `false` antes de vender.
  */
 export const PREVIEW_UNLOCK_ALL = true;
-
-/** Contato de suporte pelo WhatsApp (trocar pelo número oficial). */
-export const supportWhatsApp =
-  "https://wa.me/5511999999999?text=" +
-  encodeURIComponent("Olá! Preciso de suporte na Marli Teixeira Academy.");
 
 export const passePro = {
   title: "Passe Pro",
@@ -839,13 +881,48 @@ export interface Level {
 }
 
 export const levels: readonly Level[] = [
-  { level: 1, name: "Exploradora", criteria: "Entrou na formação e definiu sua rota.", minPoints: 0 },
-  { level: 2, name: "Base Profissional", criteria: "Concluiu fundamentos, pele e biossegurança.", minPoints: 300 },
-  { level: 3, name: "Técnica em Desenvolvimento", criteria: "Concluiu uma trilha técnica.", minPoints: 700 },
-  { level: 4, name: "Multitécnica", criteria: "Concluiu pelo menos três trilhas.", minPoints: 1200 },
-  { level: 5, name: "Profissional de Autoridade", criteria: "Concluiu posicionamento, conteúdo e vendas.", minPoints: 1800 },
-  { level: 6, name: "Operação em Crescimento", criteria: "Concluiu organização, precificação e escala.", minPoints: 2500 },
-  { level: 7, name: "Elite Marli", criteria: "Concluiu toda a formação, avaliações e plano de 90 dias.", minPoints: 3200 },
+  {
+    level: 1,
+    name: "Exploradora",
+    criteria: "Entrou na formação e definiu sua rota.",
+    minPoints: 0,
+  },
+  {
+    level: 2,
+    name: "Base Profissional",
+    criteria: "Concluiu fundamentos, pele e biossegurança.",
+    minPoints: 300,
+  },
+  {
+    level: 3,
+    name: "Técnica em Desenvolvimento",
+    criteria: "Concluiu uma trilha técnica.",
+    minPoints: 700,
+  },
+  {
+    level: 4,
+    name: "Multitécnica",
+    criteria: "Concluiu pelo menos três trilhas.",
+    minPoints: 1200,
+  },
+  {
+    level: 5,
+    name: "Profissional de Autoridade",
+    criteria: "Concluiu posicionamento, conteúdo e vendas.",
+    minPoints: 1800,
+  },
+  {
+    level: 6,
+    name: "Operação em Crescimento",
+    criteria: "Concluiu organização, precificação e escala.",
+    minPoints: 2500,
+  },
+  {
+    level: 7,
+    name: "Elite Marli",
+    criteria: "Concluiu toda a formação, avaliações e plano de 90 dias.",
+    minPoints: 3200,
+  },
 ];
 
 export interface Medal {
@@ -856,18 +933,78 @@ export interface Medal {
 }
 
 export const medals: readonly Medal[] = [
-  { id: "base-solida", name: "Base Sólida", moduleSlug: "fundamentos", hint: "Conclua os Fundamentos" },
-  { id: "seguranca-primeiro", name: "Segurança Primeiro", moduleSlug: "biosseguranca", hint: "Conclua Biossegurança" },
-  { id: "esp-cicatrizes", name: "Especialista em Cicatrizes", moduleSlug: "camuflagem-de-cicatrizes", hint: "Conclua a trilha de cicatrizes" },
-  { id: "esp-olheiras", name: "Especialista em Olheiras", moduleSlug: "camuflagem-de-olheiras", hint: "Conclua a trilha de olheiras" },
-  { id: "esp-capilar", name: "Especialista Capilar", moduleSlug: "micropigmentacao-capilar", hint: "Conclua a trilha capilar" },
-  { id: "esp-areolas", name: "Especialista em Aréolas", moduleSlug: "reconstrucao-de-areolas", hint: "Conclua a trilha de aréolas" },
-  { id: "portfolio", name: "Portfólio Profissional", moduleSlug: "posicionamento", hint: "Conclua Posicionamento" },
-  { id: "primeira-venda", name: "Primeira Venda", moduleSlug: "atendimento-e-vendas", hint: "Conclua Atendimento e vendas" },
-  { id: "agenda-organizada", name: "Agenda Organizada", moduleSlug: "estruturacao-da-operacao", hint: "Conclua Estruturação da operação" },
-  { id: "autoridade", name: "Autoridade em Construção", moduleSlug: "conteudo-e-clientes", hint: "Conclua Conteúdo e clientes" },
-  { id: "operacao-10k", name: "Operação 10K", moduleSlug: "precificacao-agenda-10k", hint: "Conclua Precificação e Agenda 10K" },
-  { id: "operacao-20k", name: "Operação 20K", moduleSlug: "crescimento-e-escala", hint: "Conclua Crescimento e escala" },
+  {
+    id: "base-solida",
+    name: "Base Sólida",
+    moduleSlug: "fundamentos",
+    hint: "Conclua os Fundamentos",
+  },
+  {
+    id: "seguranca-primeiro",
+    name: "Segurança Primeiro",
+    moduleSlug: "biosseguranca",
+    hint: "Conclua Biossegurança",
+  },
+  {
+    id: "esp-cicatrizes",
+    name: "Especialista em Cicatrizes",
+    moduleSlug: "camuflagem-de-cicatrizes",
+    hint: "Conclua a trilha de cicatrizes",
+  },
+  {
+    id: "esp-olheiras",
+    name: "Especialista em Olheiras",
+    moduleSlug: "camuflagem-de-olheiras",
+    hint: "Conclua a trilha de olheiras",
+  },
+  {
+    id: "esp-capilar",
+    name: "Especialista Capilar",
+    moduleSlug: "micropigmentacao-capilar",
+    hint: "Conclua a trilha capilar",
+  },
+  {
+    id: "esp-areolas",
+    name: "Especialista em Aréolas",
+    moduleSlug: "reconstrucao-de-areolas",
+    hint: "Conclua a trilha de aréolas",
+  },
+  {
+    id: "portfolio",
+    name: "Portfólio Profissional",
+    moduleSlug: "posicionamento",
+    hint: "Conclua Posicionamento",
+  },
+  {
+    id: "primeira-venda",
+    name: "Primeira Venda",
+    moduleSlug: "atendimento-e-vendas",
+    hint: "Conclua Atendimento e vendas",
+  },
+  {
+    id: "agenda-organizada",
+    name: "Agenda Organizada",
+    moduleSlug: "estruturacao-da-operacao",
+    hint: "Conclua Estruturação da operação",
+  },
+  {
+    id: "autoridade",
+    name: "Autoridade em Construção",
+    moduleSlug: "conteudo-e-clientes",
+    hint: "Conclua Conteúdo e clientes",
+  },
+  {
+    id: "operacao-10k",
+    name: "Operação 10K",
+    moduleSlug: "precificacao-agenda-10k",
+    hint: "Conclua Precificação e Agenda 10K",
+  },
+  {
+    id: "operacao-20k",
+    name: "Operação 20K",
+    moduleSlug: "crescimento-e-escala",
+    hint: "Conclua Crescimento e escala",
+  },
 ];
 
 export const MEDALS_DISCLAIMER =
@@ -889,25 +1026,54 @@ export const rotas: readonly Rota[] = [
     id: "iniciante",
     name: "Rota Iniciante",
     description: "Começando do zero: base técnica completa antes de qualquer trilha.",
-    order: ["comece-por-aqui", "fundamentos", "pele-e-pigmentologia", "biosseguranca", "materiais-e-equipamentos", "sobrancelhas", "posicionamento"],
+    order: [
+      "comece-por-aqui",
+      "fundamentos",
+      "pele-e-pigmentologia",
+      "biosseguranca",
+      "materiais-e-equipamentos",
+      "sobrancelhas",
+      "posicionamento",
+    ],
   },
   {
     id: "beleza",
     name: "Rota Profissional da Beleza",
     description: "Já atua na beleza: base rápida, técnica de entrada e captação de clientes.",
-    order: ["comece-por-aqui", "fundamentos", "pele-e-pigmentologia", "biosseguranca", "sobrancelhas", "posicionamento", "atendimento-e-vendas"],
+    order: [
+      "comece-por-aqui",
+      "fundamentos",
+      "pele-e-pigmentologia",
+      "biosseguranca",
+      "sobrancelhas",
+      "posicionamento",
+      "atendimento-e-vendas",
+    ],
   },
   {
     id: "micro",
     name: "Rota Micropigmentadora",
     description: "Já é micropigmentadora: foco em trilhas técnicas e ampliação de serviços.",
-    order: ["comece-por-aqui", "pele-e-pigmentologia", "camuflagem-de-cicatrizes", "sobrancelhas", "posicionamento", "precificacao-agenda-10k"],
+    order: [
+      "comece-por-aqui",
+      "pele-e-pigmentologia",
+      "camuflagem-de-cicatrizes",
+      "sobrancelhas",
+      "posicionamento",
+      "precificacao-agenda-10k",
+    ],
   },
   {
     id: "negocio",
     name: "Rota Negócio e Escala",
     description: "Tem técnica, falta operação: posicionamento, vendas, preço e escala.",
-    order: ["comece-por-aqui", "posicionamento", "atendimento-e-vendas", "precificacao-agenda-10k", "crescimento-e-escala"],
+    order: [
+      "comece-por-aqui",
+      "posicionamento",
+      "atendimento-e-vendas",
+      "precificacao-agenda-10k",
+      "crescimento-e-escala",
+    ],
   },
 ];
 
