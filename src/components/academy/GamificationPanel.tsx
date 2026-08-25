@@ -33,14 +33,14 @@ export function GamificationPanel({
         <Progress value={percent} className="mt-5 h-1.5 bg-secondary" />
         <p className="mt-2 text-xs text-muted-foreground">
           {nextLevel
-            ? `${points} pts · faltam ${nextLevel.minPoints - points} pts para "${nextLevel.name}"`
-            : `${points} pts · nível máximo alcançado`}
+            ? `${points} pontos · faltam ${nextLevel.minPoints - points} pontos para "${nextLevel.name}"`
+            : `${points} pontos · nível máximo alcançado`}
         </p>
 
         <ul className="mt-5 space-y-1 text-xs text-muted-foreground">
-          <li>+10 pts por aula concluída</li>
-          <li>+60 pts por módulo finalizado</li>
-          <li>+40 pts por desafio cumprido</li>
+          <li>+10 pontos por aula concluída</li>
+          <li>+60 pontos por módulo finalizado</li>
+          <li>+40 pontos por desafio cumprido</li>
         </ul>
       </div>
 

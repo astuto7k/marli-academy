@@ -9,6 +9,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/hooks/use-auth";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -94,9 +95,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Marli Teixeira Academy | Área de Membros Gamificada" },
-      { name: "twitter:description", content: "Formação completa em micropigmentação: base técnica, trilhas, construção do negócio, gamificação com níveis e medalhas, e Desbloqueios Pro opcionais." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f41da8d0-a8a4-40c3-9767-7737f34e5a06/id-preview-fe0e20d7--30feeeba-7a9e-4e35-acca-3f3a19f022c7.lovable.app-1785277605030.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f41da8d0-a8a4-40c3-9767-7737f34e5a06/id-preview-fe0e20d7--30feeeba-7a9e-4e35-acca-3f3a19f022c7.lovable.app-1785277605030.png" },
+      {
+        name: "twitter:description",
+        content:
+          "Formação completa em micropigmentação: base técnica, trilhas, construção do negócio, gamificação com níveis e medalhas, e Desbloqueios Pro opcionais.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f41da8d0-a8a4-40c3-9767-7737f34e5a06/id-preview-fe0e20d7--30feeeba-7a9e-4e35-acca-3f3a19f022c7.lovable.app-1785277605030.png",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f41da8d0-a8a4-40c3-9767-7737f34e5a06/id-preview-fe0e20d7--30feeeba-7a9e-4e35-acca-3f3a19f022c7.lovable.app-1785277605030.png",
+      },
     ],
     links: [
       {
@@ -138,8 +151,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <AuthProvider>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <Outlet />
+      </AuthProvider>
       <Toaster position="top-center" />
     </QueryClientProvider>
   );

@@ -40,7 +40,9 @@ function Dashboard() {
     (rota
       ? rota.order
           .map((slug) => modules.find((item) => item.slug === slug))
-          .find((item) => item && item.status === "disponivel" && progressOf(item.slug).percent < 100)
+          .find(
+            (item) => item && item.status === "disponivel" && progressOf(item.slug).percent < 100,
+          )
       : undefined) ??
     available.find((item) => progressOf(item.slug).percent < 100) ??
     available[0];
@@ -70,7 +72,7 @@ function Dashboard() {
         <div className="relative mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 md:py-20">
           <span className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-background/50 px-4 py-1.5 text-[0.7rem] uppercase tracking-[0.3em] text-gold backdrop-blur">
             <Sparkles className="size-3" aria-hidden="true" />
-            {rota ? rota.name : "Comece pelo diagnóstico"}
+            {rota ? rota.name : "Sua jornada profissional começa aqui"}
           </span>
 
           <h1 className="mt-6 max-w-2xl text-4xl leading-[1.05] font-semibold text-foreground sm:text-5xl">
@@ -82,18 +84,17 @@ function Dashboard() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            {!rota && (
-              <Button asChild className="bg-gradient-gold text-primary-foreground hover:opacity-90">
-                <Link to="/minha-rota">
-                  Fazer diagnóstico inicial
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Link>
-              </Button>
-            )}
-            <Button asChild variant={rota ? "default" : "outline"} className={rota ? "bg-gradient-gold text-primary-foreground hover:opacity-90" : ""}>
+            <Button
+              asChild
+              variant={rota ? "default" : "outline"}
+              className={rota ? "bg-gradient-gold text-primary-foreground hover:opacity-90" : ""}
+            >
               <Link to="/modulo/$slug" params={{ slug: nextModule.slug }}>
                 <PlayCircle className="size-4" aria-hidden="true" />
                 {nextProgress.percent > 0 ? "Continuar" : "Começar"}: {nextModule.title}
+                {nextProgress.percent === 0 && (
+                  <span className="text-[0.7rem] opacity-80">· 50 pontos</span>
+                )}
               </Link>
             </Button>
           </div>
@@ -105,7 +106,8 @@ function Dashboard() {
             </div>
             <Progress value={hydrated ? globalPercent : 0} className="mt-3 h-1.5 bg-secondary" />
             <p className="mt-2 text-xs text-muted-foreground">
-              {hydrated ? lessonsCompleted : 0} de {totalLessons} aulas concluídas · {hydrated ? points : 0} pontos
+              {hydrated ? lessonsCompleted : 0} de {totalLessons} aulas concluídas ·{" "}
+              {hydrated ? points : 0} pontos
             </p>
           </div>
         </div>
@@ -148,8 +150,7 @@ function Dashboard() {
                 },
                 { done: 0, total: 0 },
               );
-              const percent =
-                totals.total > 0 ? Math.round((totals.done / totals.total) * 100) : 0;
+              const percent = totals.total > 0 ? Math.round((totals.done / totals.total) * 100) : 0;
 
               return (
                 <Link
@@ -183,7 +184,6 @@ function Dashboard() {
             })}
           </div>
         </section>
-
       </div>
     </AcademyShell>
   );

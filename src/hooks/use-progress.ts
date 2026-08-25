@@ -8,6 +8,7 @@ import {
   nextLevelForPoints,
   type RotaId,
 } from "@/data/academy";
+import { useAuth } from "@/hooks/use-auth";
 
 /**
  * Progresso da aluna persistido no navegador.
@@ -16,7 +17,7 @@ import {
  * depois da hidratação para não gerar divergência entre servidor e cliente.
  */
 
-const STORAGE_KEY = "mta-progress-v1";
+const STORAGE_KEY_PREFIX = "mta-progress-v1";
 
 export interface ProgressState {
   readonly rota: RotaId | null;
@@ -35,10 +36,10 @@ const EMPTY_STATE: ProgressState = {
   passePro: false,
 };
 
-function readState(): ProgressState {
+function readState(storageKey: string): ProgressState {
   if (typeof window === "undefined") return EMPTY_STATE;
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(storageKey);
     if (!raw) return EMPTY_STATE;
     const parsed = JSON.parse(raw) as Partial<ProgressState>;
     return {
@@ -63,17 +64,16 @@ export function lessonKey(moduleSlug: string, lessonIndex: number): string {
  * leem a MESMA instância, então marcar uma aula atualiza os pontos lá em cima.
  */
 let storeState: ProgressState = EMPTY_STATE;
-let hydratedOnce = false;
 const listeners = new Set<() => void>();
 
 function emit() {
   listeners.forEach((listener) => listener());
 }
 
-function setStore(next: ProgressState) {
+function setStore(next: ProgressState, storageKey: string) {
   storeState = next;
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(storageKey, JSON.stringify(next));
   } catch {
     // Modo privado / cota cheia: seguimos apenas com o estado em memória.
   }
@@ -81,14 +81,13 @@ function setStore(next: ProgressState) {
 }
 
 export function useProgress() {
+  const { member } = useAuth();
+  const storageKey = `${STORAGE_KEY_PREFIX}:${member?.email ?? "guest"}`;
   const [state, setState] = useState<ProgressState>(storeState);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    if (!hydratedOnce) {
-      storeState = readState();
-      hydratedOnce = true;
-    }
+    storeState = readState(storageKey);
     setState(storeState);
     setHydrated(true);
 
@@ -97,24 +96,33 @@ export function useProgress() {
     return () => {
       listeners.delete(listener);
     };
-  }, []);
+  }, [storageKey]);
 
-  const toggleLesson = useCallback((moduleSlug: string, lessonIndex: number) => {
-    const key = lessonKey(moduleSlug, lessonIndex);
-    const has = storeState.lessons.includes(key);
-    setStore({
-      ...storeState,
-      lessons: has
-        ? storeState.lessons.filter((item) => item !== key)
-        : [...storeState.lessons, key],
-    });
-  }, []);
+  const toggleLesson = useCallback(
+    (moduleSlug: string, lessonIndex: number) => {
+      const key = lessonKey(moduleSlug, lessonIndex);
+      const has = storeState.lessons.includes(key);
+      setStore(
+        {
+          ...storeState,
+          lessons: has
+            ? storeState.lessons.filter((item) => item !== key)
+            : [...storeState.lessons, key],
+        },
+        storageKey,
+      );
+    },
+    [storageKey],
+  );
 
-  const completeLesson = useCallback((moduleSlug: string, lessonIndex: number) => {
-    const key = lessonKey(moduleSlug, lessonIndex);
-    if (storeState.lessons.includes(key)) return;
-    setStore({ ...storeState, lessons: [...storeState.lessons, key] });
-  }, []);
+  const completeLesson = useCallback(
+    (moduleSlug: string, lessonIndex: number) => {
+      const key = lessonKey(moduleSlug, lessonIndex);
+      if (storeState.lessons.includes(key)) return;
+      setStore({ ...storeState, lessons: [...storeState.lessons, key] }, storageKey);
+    },
+    [storageKey],
+  );
 
   const isLessonDone = useCallback(
     (moduleSlug: string, lessonIndex: number) =>
@@ -122,21 +130,29 @@ export function useProgress() {
     [state.lessons],
   );
 
-  const toggleChallenge = useCallback((moduleSlug: string) => {
-    const has = storeState.challenges.includes(moduleSlug);
-    setStore({
-      ...storeState,
-      challenges: has
-        ? storeState.challenges.filter((item) => item !== moduleSlug)
-        : [...storeState.challenges, moduleSlug],
-    });
-  }, []);
+  const toggleChallenge = useCallback(
+    (moduleSlug: string) => {
+      const has = storeState.challenges.includes(moduleSlug);
+      setStore(
+        {
+          ...storeState,
+          challenges: has
+            ? storeState.challenges.filter((item) => item !== moduleSlug)
+            : [...storeState.challenges, moduleSlug],
+        },
+        storageKey,
+      );
+    },
+    [storageKey],
+  );
 
-  const setRota = useCallback((rota: RotaId) => setStore({ ...storeState, rota }), []);
+  const setRota = useCallback(
+    (rota: RotaId) => setStore({ ...storeState, rota }, storageKey),
+    [storageKey],
+  );
 
   const completedIn = useCallback(
-    (moduleSlug: string) =>
-      state.lessons.filter((key) => key.startsWith(`${moduleSlug}::`)).length,
+    (moduleSlug: string) => state.lessons.filter((key) => key.startsWith(`${moduleSlug}::`)).length,
     [state.lessons],
   );
 
@@ -157,9 +173,7 @@ export function useProgress() {
     const level = levelForPoints(points);
     const nextLevel = nextLevelForPoints(points);
     const earnedMedals = medals.filter((medal) =>
-      medal.moduleSlug
-        ? completedModules.some((item) => item.slug === medal.moduleSlug)
-        : false,
+      medal.moduleSlug ? completedModules.some((item) => item.slug === medal.moduleSlug) : false,
     );
 
     return {

@@ -18,12 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useProgress } from "@/hooks/use-progress";
-import {
-  PREVIEW_UNLOCK_ALL,
-  getModule,
-  modules,
-  type AcademyModule,
-} from "@/data/academy";
+import { PREVIEW_UNLOCK_ALL, getModule, modules, type AcademyModule } from "@/data/academy";
 
 export const Route = createFileRoute("/modulo/$slug")({
   loader: ({ params }) => {
@@ -67,9 +62,7 @@ function ModulePage() {
   const inProduction = academyModule.status === "producao";
   const challengeDone = state.challenges.includes(academyModule.slug);
   const proUnlocked =
-    PREVIEW_UNLOCK_ALL ||
-    state.passePro ||
-    state.proUnlocked.includes(academyModule.pro?.id ?? "");
+    PREVIEW_UNLOCK_ALL || state.passePro || state.proUnlocked.includes(academyModule.pro?.id ?? "");
 
   // Próximo módulo segue a ordem global da formação (não só o mesmo núcleo).
   const nextModule = modules[modules.findIndex((item) => item.slug === academyModule.slug) + 1];
@@ -125,7 +118,7 @@ function ModulePage() {
                   )}
                 >
                   <CheckCircle2 className="size-4" aria-hidden="true" />
-                  {activeDone ? "Aula concluída (+10 pts)" : "Marcar como concluída"}
+                  {activeDone ? "Aula concluída (+10 pontos)" : "Marcar como concluída"}
                 </Button>
 
                 <Button
@@ -133,7 +126,9 @@ function ModulePage() {
                   variant="outline"
                   disabled={inProduction || !hasNextLesson || !activeDone}
                   title={
-                    !activeDone ? "Marque a aula como concluída para avançar" : "Ir para a próxima aula"
+                    !activeDone
+                      ? "Marque a aula como concluída para avançar"
+                      : "Ir para a próxima aula"
                   }
                   onClick={() => {
                     completeLesson(academyModule.slug, activeIndex);
@@ -161,7 +156,8 @@ function ModulePage() {
                     }
                     className={cn(
                       "gap-2",
-                      moduleCompleted && "bg-gradient-gold text-primary-foreground hover:opacity-90",
+                      moduleCompleted &&
+                        "bg-gradient-gold text-primary-foreground hover:opacity-90",
                     )}
                   >
                     Próximo módulo
@@ -182,7 +178,6 @@ function ModulePage() {
             )}
           </div>
         </header>
-
 
         <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.4fr_1fr]">
           {/* Aulas */}
@@ -239,7 +234,9 @@ function ModulePage() {
                       >
                         {lesson}
                       </span>
-                      <span className="shrink-0 text-[0.7rem] text-muted-foreground">+10 pts</span>
+                      <span className="shrink-0 text-[0.7rem] text-muted-foreground">
+                        +10 pontos
+                      </span>
                     </button>
                   </li>
                 );
@@ -262,7 +259,9 @@ function ModulePage() {
                     !challengeDone && "bg-gradient-gold text-primary-foreground hover:opacity-90",
                   )}
                 >
-                  {challengeDone ? "Desafio concluído (+40 pts)" : "Marcar desafio como concluído"}
+                  {challengeDone
+                    ? "Desafio concluído (+40 pontos)"
+                    : "Marcar desafio como concluído"}
                 </Button>
               </div>
             )}

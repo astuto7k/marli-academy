@@ -55,7 +55,9 @@ export function ModuleCard({ module, percent, className }: ModuleCardProps) {
 
         <div className="space-y-2">
           <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span>{module.lessons.length} aulas · {module.deliverables.length} entregáveis</span>
+            <span>
+              {module.lessons.length} aulas · {module.deliverables.length} entregáveis
+            </span>
             <span className={cn(done ? "text-gold" : "text-foreground")}>{percent}%</span>
           </div>
           <Progress value={percent} className="h-1.5 bg-secondary" />
@@ -69,7 +71,7 @@ export function ModuleCard({ module, percent, className }: ModuleCardProps) {
             )}
           >
             <PlayCircle className="size-4" aria-hidden="true" />
-            {inProduction ? "Em breve" : percent > 0 ? "Continuar" : "Começar módulo"}
+            {inProduction ? "Em breve" : percent > 0 ? "Continuar" : `Começar: ${module.title}`}
           </span>
           {module.pro && (
             <span className="inline-flex items-center gap-1 text-[0.7rem] text-muted-foreground">
