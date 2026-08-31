@@ -55,10 +55,10 @@ const CONTENT_ITEMS: readonly NavItem[] = [
 
 const EXTRA_ITEMS: readonly NavItem[] = [
   { title: "Biblioteca de materiais", url: "/biblioteca", icon: Library },
-  { title: "Comunidade", url: "/comunidade", icon: Users, soon: true },
-  { title: "Aulas ao vivo", url: "/ao-vivo", icon: Radio, soon: true },
-  { title: "Certificados", url: "/certificados", icon: Award, soon: true },
-  { title: "Loja da aluna", url: "/loja", icon: ShoppingBag, soon: true },
+  { title: "Grupo no WhatsApp", url: "/comunidade", icon: Users },
+  { title: "Desafios da semana", url: "/ao-vivo", icon: Radio },
+  { title: "Certificados", url: "/certificados", icon: Award },
+  { title: "Loja da aluna", url: "/loja", icon: ShoppingBag },
 ];
 
 export function AppSidebar() {

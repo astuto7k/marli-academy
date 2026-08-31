@@ -10,9 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AoVivoRouteImport } from './routes/ao-vivo'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
 import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as CertificadosRouteImport } from './routes/certificados'
+import { Route as ComunidadeRouteImport } from './routes/comunidade'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LojaRouteImport } from './routes/loja'
 import { Route as MinhaRotaRouteImport } from './routes/minha-rota'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as ModuloSlugRouteImport } from './routes/modulo.$slug'
@@ -21,6 +25,11 @@ import { Route as NucleoIdRouteImport } from './routes/nucleo.$id'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AoVivoRoute = AoVivoRouteImport.update({
+  id: '/ao-vivo',
+  path: '/ao-vivo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BibliotecaRoute = BibliotecaRouteImport.update({
@@ -33,9 +42,24 @@ const CadastroRoute = CadastroRouteImport.update({
   path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificadosRoute = CertificadosRouteImport.update({
+  id: '/certificados',
+  path: '/certificados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComunidadeRoute = ComunidadeRouteImport.update({
+  id: '/comunidade',
+  path: '/comunidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LojaRoute = LojaRouteImport.update({
+  id: '/loja',
+  path: '/loja',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MinhaRotaRoute = MinhaRotaRouteImport.update({
@@ -61,9 +85,13 @@ const NucleoIdRoute = NucleoIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ao-vivo': typeof AoVivoRoute
   '/biblioteca': typeof BibliotecaRoute
   '/cadastro': typeof CadastroRoute
+  '/certificados': typeof CertificadosRoute
+  '/comunidade': typeof ComunidadeRoute
   '/login': typeof LoginRoute
+  '/loja': typeof LojaRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -71,9 +99,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ao-vivo': typeof AoVivoRoute
   '/biblioteca': typeof BibliotecaRoute
   '/cadastro': typeof CadastroRoute
+  '/certificados': typeof CertificadosRoute
+  '/comunidade': typeof ComunidadeRoute
   '/login': typeof LoginRoute
+  '/loja': typeof LojaRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -82,9 +114,13 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ao-vivo': typeof AoVivoRoute
   '/biblioteca': typeof BibliotecaRoute
   '/cadastro': typeof CadastroRoute
+  '/certificados': typeof CertificadosRoute
+  '/comunidade': typeof ComunidadeRoute
   '/login': typeof LoginRoute
+  '/loja': typeof LojaRoute
   '/minha-rota': typeof MinhaRotaRoute
   '/sobre': typeof SobreRoute
   '/modulo/$slug': typeof ModuloSlugRoute
@@ -94,9 +130,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ao-vivo'
     | '/biblioteca'
     | '/cadastro'
+    | '/certificados'
+    | '/comunidade'
     | '/login'
+    | '/loja'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -104,9 +144,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ao-vivo'
     | '/biblioteca'
     | '/cadastro'
+    | '/certificados'
+    | '/comunidade'
     | '/login'
+    | '/loja'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -114,9 +158,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/ao-vivo'
     | '/biblioteca'
     | '/cadastro'
+    | '/certificados'
+    | '/comunidade'
     | '/login'
+    | '/loja'
     | '/minha-rota'
     | '/sobre'
     | '/modulo/$slug'
@@ -125,9 +173,13 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AoVivoRoute: typeof AoVivoRoute
   BibliotecaRoute: typeof BibliotecaRoute
   CadastroRoute: typeof CadastroRoute
+  CertificadosRoute: typeof CertificadosRoute
+  ComunidadeRoute: typeof ComunidadeRoute
   LoginRoute: typeof LoginRoute
+  LojaRoute: typeof LojaRoute
   MinhaRotaRoute: typeof MinhaRotaRoute
   SobreRoute: typeof SobreRoute
   ModuloSlugRoute: typeof ModuloSlugRoute
@@ -141,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ao-vivo': {
+      id: '/ao-vivo'
+      path: '/ao-vivo'
+      fullPath: '/ao-vivo'
+      preLoaderRoute: typeof AoVivoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/biblioteca': {
@@ -157,11 +216,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CadastroRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certificados': {
+      id: '/certificados'
+      path: '/certificados'
+      fullPath: '/certificados'
+      preLoaderRoute: typeof CertificadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comunidade': {
+      id: '/comunidade'
+      path: '/comunidade'
+      fullPath: '/comunidade'
+      preLoaderRoute: typeof ComunidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loja': {
+      id: '/loja'
+      path: '/loja'
+      fullPath: '/loja'
+      preLoaderRoute: typeof LojaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/minha-rota': {
@@ -197,9 +277,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AoVivoRoute: AoVivoRoute,
   BibliotecaRoute: BibliotecaRoute,
   CadastroRoute: CadastroRoute,
+  CertificadosRoute: CertificadosRoute,
+  ComunidadeRoute: ComunidadeRoute,
   LoginRoute: LoginRoute,
+  LojaRoute: LojaRoute,
   MinhaRotaRoute: MinhaRotaRoute,
   SobreRoute: SobreRoute,
   ModuloSlugRoute: ModuloSlugRoute,
